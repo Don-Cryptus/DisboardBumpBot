@@ -26,5 +26,5 @@ jobs:
         with:
           envkey_EMAIL: ${{ secrets.EMAIL }}
           envkey_PASSWORD: ${{ secrets.PASSWORD }}
-          envkey_URL: ${{ secrets.SESSION_SECRET }}
+          envkey_URL: ${{ secrets.URL }}
       - run: yarn
