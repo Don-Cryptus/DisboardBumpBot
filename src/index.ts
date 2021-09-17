@@ -18,7 +18,7 @@ let args = [
 (async () => {
   const browser = await puppeteer.launch({
     // @ts-ignore
-    headless: false,
+    headless: true,
     defaultViewport: null,
     args,
   });
@@ -30,20 +30,18 @@ let args = [
   await page.type('input[name="password"]', process.env.PASSWORD as string);
   await page.click('button[type="submit"]');
 
-  await page.waitForSelector('div[aria-label="Message #bot"]', {
-    timeout: 6000,
-  });
-  await page.reload({
-    waitUntil: ['networkidle0', 'domcontentloaded'],
-    timeout: 1000,
-  });
+  const selector = 'div[aria-multiline="true"]';
 
-  await page.click('div[aria-label="Message #bot"]', { delay: 1000 });
+  await page.waitForSelector(selector, { timeout: 6000 });
+  await page.reload({ waitUntil: ['networkidle0', 'domcontentloaded'] });
+  await page.waitForSelector(selector, { timeout: 6000 });
+  await page.click(selector, { delay: 1000, clickCount: 10 });
+
   await page.keyboard.type('!d bump');
   await page.keyboard.press('Enter');
 
   await page.screenshot({ path: 'discord.png', fullPage: true });
   console.log('finished');
 
-  // await browser.close();
+  await browser.close();
 })();
