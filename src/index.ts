@@ -18,7 +18,7 @@ let args = [
 (async () => {
   const browser = await puppeteer.launch({
     // @ts-ignore
-    headless: true,
+    headless: false,
     defaultViewport: null,
     args,
   });
