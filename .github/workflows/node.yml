@@ -28,3 +28,5 @@ jobs:
           envkey_PASSWORD: ${{ secrets.PASSWORD }}
           envkey_URL: ${{ secrets.URL }}
       - run: yarn
+      - run: yarn build
+
