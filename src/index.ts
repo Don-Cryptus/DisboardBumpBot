@@ -16,9 +16,10 @@ let args = [
 ];
 
 (async () => {
+  const headless = 'production' === process.env.NODE_ENV;
   const browser = await puppeteer.launch({
     // @ts-ignore
-    headless: false,
+    headless: headless,
     defaultViewport: null,
     args,
   });
