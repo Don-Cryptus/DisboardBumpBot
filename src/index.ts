@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import puppeteer from 'puppeteer-extra';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
+import fs from 'fs';
 
 puppeteer.use(StealthPlugin());
 
@@ -24,6 +25,13 @@ const getRandomBetween = (min: number, max: number): number => {
 };
 
 (async () => {
+  const lastRunDate =
+    fs.existsSync('lastRun.txt') &&
+    new Date(fs.readFileSync('lastRun.txt', 'utf-8'));
+
+  // console.log(new Date(), lastRunDate);
+  // lastRunDate &&
+  //   console.log((new Date().getTime() - lastRunDate.getTime()) / 1000 / 60);
   const headless = 'production' === process.env.NODE_ENV;
   'production' === process.env.NODE_ENV &&
     (await sleep(getRandomBetween(240, 500)));
@@ -49,9 +57,16 @@ const getRandomBetween = (min: number, max: number): number => {
   await page.waitForSelector(selector, { timeout: 6000 });
   await page.click(selector, { delay: 1000, clickCount: 10 });
 
+  if (lastRunDate) {
+    while ((new Date().getTime() - lastRunDate.getTime()) / 1000 / 60 < 121) {
+      await sleep(5);
+    }
+  }
+
   await page.keyboard.type('!d bump');
   await page.keyboard.press('Enter');
 
+  fs.writeFileSync('lastRun.txt', `${new Date()}`, 'utf-8');
   await page.screenshot({ path: 'discord.png', fullPage: true });
   console.log('finished');
 
