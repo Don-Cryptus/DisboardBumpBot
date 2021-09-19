@@ -15,8 +15,19 @@ let args = [
   '--disable-gpu',
 ];
 
+function sleep(s: number) {
+  return new Promise((resolve) => setTimeout(resolve, s * 1000));
+}
+
+const getRandomBetween = (min: number, max: number): number => {
+  return parseInt(Math.random() * (max - min) + min + '');
+};
+
 (async () => {
   const headless = 'production' === process.env.NODE_ENV;
+  'production' === process.env.NODE_ENV &&
+    (await sleep(getRandomBetween(240, 500)));
+
   const browser = await puppeteer.launch({
     // @ts-ignore
     headless: headless,
