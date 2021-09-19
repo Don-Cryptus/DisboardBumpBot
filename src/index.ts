@@ -20,21 +20,18 @@ function sleep(s: number) {
   return new Promise((resolve) => setTimeout(resolve, s * 1000));
 }
 
-const getRandomBetween = (min: number, max: number): number => {
-  return parseInt(Math.random() * (max - min) + min + '');
-};
+// const getRandomBetween = (min: number, max: number): number => {
+//   return parseInt(Math.random() * (max - min) + min + '');
+// };
 
 (async () => {
   const lastRunDate =
     fs.existsSync('lastRun.txt') &&
     new Date(fs.readFileSync('lastRun.txt', 'utf-8'));
 
-  // console.log(new Date(), lastRunDate);
-  // lastRunDate &&
-  //   console.log((new Date().getTime() - lastRunDate.getTime()) / 1000 / 60);
   const headless = 'production' === process.env.NODE_ENV;
-  'production' === process.env.NODE_ENV &&
-    (await sleep(getRandomBetween(240, 500)));
+  // 'production' === process.env.NODE_ENV &&
+  //   (await sleep(getRandomBetween(240, 500)));
 
   const browser = await puppeteer.launch({
     // @ts-ignore
