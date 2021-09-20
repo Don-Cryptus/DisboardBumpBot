@@ -55,7 +55,7 @@ function sleep(s: number) {
   await page.click(selector, { delay: 1000, clickCount: 10 });
 
   if (lastRunDate) {
-    while ((new Date().getTime() - lastRunDate.getTime()) / 1000 / 60 < 122) {
+    while ((new Date().getTime() - lastRunDate.getTime()) / 1000 / 60 < 120) {
       await sleep(5);
     }
   }
