@@ -17,7 +17,7 @@ let args = [
 ];
 
 function sleep(s: number) {
-  return new Promise((resolve) => setTimeout(resolve, s * 1000));
+  return new Promise((resolve) => setTimeout(resolve, s));
 }
 
 // const getRandomBetween = (min: number, max: number): number => {
@@ -56,7 +56,8 @@ function sleep(s: number) {
 
   if (lastRunDate) {
     while ((new Date().getTime() - lastRunDate.getTime()) / 1000 / 60 < 120) {
-      await sleep((new Date().getTime() - lastRunDate.getTime()) / 1000);
+      // console.log((new Date().getTime() - lastRunDate.getTime()) / 1000 / 60);
+      await sleep(50);
     }
   }
 
