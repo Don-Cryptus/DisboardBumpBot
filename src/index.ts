@@ -48,15 +48,33 @@ function sleep(s: number) {
   await page.click('button[type="submit"]');
 
   const selector = 'div[aria-multiline="true"]';
+  const closeButton = '//button[@aria-label="Close"]//div';
 
   await page.waitForSelector(selector, { timeout: 6000 });
-  await page.reload({ waitUntil: ['networkidle0', 'domcontentloaded'] });
-  await page.waitForSelector(selector, { timeout: 6000 });
+
+  if (
+    await page.waitForSelector('button[aria-label="Close"]', { timeout: 6000 })
+  ) {
+    const elements = await page.$x(closeButton);
+    for (let element of elements) {
+      await element.click();
+    }
+  }
+  if (
+    await page.waitForSelector('button[aria-label="Close"]', { timeout: 6000 })
+  ) {
+    const elements = await page.$x(closeButton);
+    for (let element of elements) {
+      await element.click();
+    }
+  }
   await page.click(selector, { delay: 1000, clickCount: 10 });
 
   if (lastRunDate) {
-    while ((new Date().getTime() - lastRunDate.getTime()) / 1000 / 60 < 120.02) {
-      // console.log((new Date().getTime() - lastRunDate.getTime()) / 1000 / 60);
+    while (
+      (new Date().getTime() - lastRunDate.getTime()) / 1000 / 60 <
+      120.02
+    ) {
       await sleep(250);
     }
   }
