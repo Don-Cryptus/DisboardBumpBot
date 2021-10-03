@@ -29,13 +29,13 @@ function sleep(s: number) {
     fs.existsSync('lastRun.txt') &&
     new Date(fs.readFileSync('lastRun.txt', 'utf-8'));
 
-  const headless = 'production' === process.env.NODE_ENV;
+  // const headless = 'production' === process.env.NODE_ENV;
   // 'production' === process.env.NODE_ENV &&
   //   (await sleep(getRandomBetween(240, 500)));
 
   const browser = await puppeteer.launch({
     // @ts-ignore
-    headless: headless,
+    headless: false,
     defaultViewport: null,
     args,
   });
@@ -48,27 +48,23 @@ function sleep(s: number) {
   await page.click('button[type="submit"]');
 
   const selector = 'div[aria-multiline="true"]';
-  const closeButton = '//button[@aria-label="Close"]//div';
+  const closeButton = 'button[aria-label="Close"]';
+  const closeButtonXpath = '//button[@aria-label="Close"]//div';
 
   await page.waitForSelector(selector, { timeout: 6000 });
 
-  if (
-    await page.waitForSelector('button[aria-label="Close"]', { timeout: 6000 })
-  ) {
-    const elements = await page.$x(closeButton);
+  if (await page.waitForSelector(closeButton, { timeout: 6000 })) {
+    const elements = await page.$x(closeButtonXpath);
     for (let element of elements) {
       await element.click();
     }
   }
-  if (
-    await page.waitForSelector('button[aria-label="Close"]', { timeout: 6000 })
-  ) {
-    const elements = await page.$x(closeButton);
+  if (await page.waitForSelector(closeButton, { timeout: 6000 })) {
+    const elements = await page.$x(closeButtonXpath);
     for (let element of elements) {
       await element.click();
     }
   }
-  await page.click(selector, { delay: 1000, clickCount: 10 });
 
   if (lastRunDate) {
     while (
@@ -78,6 +74,8 @@ function sleep(s: number) {
       await sleep(250);
     }
   }
+  await page.waitForSelector(selector, { timeout: 6000 });
+  await page.click(selector, { delay: 1000, clickCount: 10 });
 
   await page.keyboard.type('!d bump');
   await page.keyboard.press('Enter');
