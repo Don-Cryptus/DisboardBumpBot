@@ -20,22 +20,16 @@ function sleep(s: number) {
   return new Promise((resolve) => setTimeout(resolve, s));
 }
 
-// const getRandomBetween = (min: number, max: number): number => {
-//   return parseInt(Math.random() * (max - min) + min + '');
-// };
-
 (async () => {
   const lastRunDate =
     fs.existsSync('lastRun.txt') &&
     new Date(fs.readFileSync('lastRun.txt', 'utf-8'));
 
-  // const headless = 'production' === process.env.NODE_ENV;
-  // 'production' === process.env.NODE_ENV &&
-  //   (await sleep(getRandomBetween(240, 500)));
+  const headless = 'production' === process.env.NODE_ENV;
 
   const browser = await puppeteer.launch({
     // @ts-ignore
-    headless: false,
+    headless,
     defaultViewport: null,
     args,
   });
@@ -66,6 +60,13 @@ function sleep(s: number) {
     }
   }
 
+  if (await page.waitForSelector(closeButton, { timeout: 6000 })) {
+    const elements = await page.$x(closeButtonXpath);
+    for (let element of elements) {
+      await element.click();
+    }
+  }
+
   if (lastRunDate) {
     while (
       (new Date().getTime() - lastRunDate.getTime()) / 1000 / 60 <
@@ -74,6 +75,7 @@ function sleep(s: number) {
       await sleep(250);
     }
   }
+
   await page.waitForSelector(selector, { timeout: 6000 });
   await page.click(selector, { delay: 1000, clickCount: 10 });
 
