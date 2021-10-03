@@ -47,25 +47,32 @@ function sleep(s: number) {
 
   await page.waitForSelector(selector, { timeout: 6000 });
 
-  if (await page.waitForSelector(closeButton, { timeout: 6000 })) {
-    const elements = await page.$x(closeButtonXpath);
-    for (let element of elements) {
-      await element.click();
+  try {
+    if (await page.waitForSelector(closeButton, { timeout: 6000 })) {
+      const elements = await page.$x(closeButtonXpath);
+      for (let element of elements) {
+        await element.click();
+      }
     }
-  }
-  if (await page.waitForSelector(closeButton, { timeout: 6000 })) {
-    const elements = await page.$x(closeButtonXpath);
-    for (let element of elements) {
-      await element.click();
-    }
-  }
+  } catch (error) {}
 
-  if (await page.waitForSelector(closeButton, { timeout: 6000 })) {
-    const elements = await page.$x(closeButtonXpath);
-    for (let element of elements) {
-      await element.click();
+  try {
+    if (await page.waitForSelector(closeButton, { timeout: 6000 })) {
+      const elements = await page.$x(closeButtonXpath);
+      for (let element of elements) {
+        await element.click();
+      }
     }
-  }
+  } catch (error) {}
+
+  try {
+    if (await page.waitForSelector(closeButton, { timeout: 6000 })) {
+      const elements = await page.$x(closeButtonXpath);
+      for (let element of elements) {
+        await element.click();
+      }
+    }
+  } catch (error) {}
 
   if (lastRunDate) {
     while (
