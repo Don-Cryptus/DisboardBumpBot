@@ -77,9 +77,9 @@ function sleep(s: number) {
   if (lastRunDate) {
     while (
       (new Date().getTime() - lastRunDate.getTime()) / 1000 / 60 <
-      120.02
+      120.0166666666666667
     ) {
-      await sleep(250);
+      await sleep(100);
     }
   }
 
