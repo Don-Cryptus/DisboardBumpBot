@@ -42,13 +42,13 @@ function sleep(s: number) {
   await page.click('button[type="submit"]');
 
   const selector = 'div[aria-multiline="true"]';
-  const closeButton = 'button[aria-label="Close"]';
-  const closeButtonXpath = '//button[@aria-label="Close"]//div';
+  const closeButton = '//button[contains(@class, "closeButton")]';
+  const closeButtonXpath = '//button[contains(@class, "closeButton")]';
 
   await page.waitForSelector(selector, { timeout: 6000 });
 
   try {
-    if (await page.waitForSelector(closeButton, { timeout: 6000 })) {
+    if (await page.waitForXPath(closeButton, { timeout: 6000 })) {
       const elements = await page.$x(closeButtonXpath);
       for (let element of elements) {
         await element.click();
@@ -57,7 +57,7 @@ function sleep(s: number) {
   } catch (error) {}
 
   try {
-    if (await page.waitForSelector(closeButton, { timeout: 6000 })) {
+    if (await page.waitForXPath(closeButton, { timeout: 6000 })) {
       const elements = await page.$x(closeButtonXpath);
       for (let element of elements) {
         await element.click();
@@ -66,7 +66,7 @@ function sleep(s: number) {
   } catch (error) {}
 
   try {
-    if (await page.waitForSelector(closeButton, { timeout: 6000 })) {
+    if (await page.waitForXPath(closeButton, { timeout: 6000 })) {
       const elements = await page.$x(closeButtonXpath);
       for (let element of elements) {
         await element.click();
